@@ -24,12 +24,7 @@ import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText edit;
-    TextView text;
-    XmlPullParser xpp;
-
     String key="1c74fe1f5913c684ec9bb14cc1dd45295904903af4c2012cb985cb757b1a322e";
-    String data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
