@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_recipe">
+
+    <fragment
+        android:id="@+id/navigation_recipe"
+        android:name="kr.ac.hs.recipe.ui.recipe.Recipe"
+        android:label="@string/title_recipe"
+        tools:layout="@layout/recipe" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="kr.ac.hs.recipe.ui.search.Search"
+        android:label="@string/title_search"
+        tools:layout="@layout/search" />
+
+    <fragment
+        android:id="@+id/navigation_community"
+        android:name="kr.ac.hs.recipe.ui.community.Community"
+        android:label="@string/title_community"
+        tools:layout="@layout/community" />
+</navigation>
