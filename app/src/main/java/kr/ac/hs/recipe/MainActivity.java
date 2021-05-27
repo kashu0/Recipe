@@ -21,7 +21,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import kr.ac.hs.recipe.ui.recipeDB.recipeData;
+import kr.ac.hs.recipe.recipeDB.recipeData;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     // Write a message to the database
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference recipeDBRef = myRef.child("recipeDB");
-    kr.ac.hs.recipe.ui.recipeDB.recipeData recipeData = null;
+    kr.ac.hs.recipe.recipeDB.recipeData recipeData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
