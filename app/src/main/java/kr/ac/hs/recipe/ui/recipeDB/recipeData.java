@@ -1,4 +1,4 @@
-package kr.ac.hs.recipe;
+package kr.ac.hs.recipe.ui.recipeDB;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
