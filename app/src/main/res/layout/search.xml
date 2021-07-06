@@ -153,7 +153,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="초보환영"
+                                android:text="한식"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -165,7 +165,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="보통"
+                                android:text="이탈리아"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -177,7 +177,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="어려움"
+                                android:text="퓨전"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -189,7 +189,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="초보환영"
+                                android:text="서양"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -201,7 +201,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="보통"
+                                android:text="일본"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -213,7 +213,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="어려움"
+                                android:text="중국"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -257,7 +257,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="초보환영"
+                                android:text="밥"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -269,7 +269,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="보통"
+                                android:text="만두/면류"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -281,7 +281,27 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="어려움"
+                                android:text="국"
+                                android:textColor="#897697"
+                                android:textSize="6pt" />
+                            </GridLayout>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:columnCount="3"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:layout_height="32dp"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/classification_button"
+                                android:paddingLeft="20dp"
+                                android:paddingTop="3dp"
+                                android:paddingRight="20dp"
+                                android:paddingBottom="3dp"
+                                android:text="구이"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -293,7 +313,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="초보환영"
+                                android:text="볶음"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -305,7 +325,27 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="보통"
+                                android:text="나물/생채/샐러드"
+                                android:textColor="#897697"
+                                android:textSize="6pt" />
+                        </GridLayout>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:columnCount="3"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:layout_height="32dp"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/classification_button"
+                                android:paddingLeft="20dp"
+                                android:paddingTop="3dp"
+                                android:paddingRight="20dp"
+                                android:paddingBottom="3dp"
+                                android:text="밑반찬/김치"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -317,7 +357,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="어려움"
+                                android:text="조림"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -329,7 +369,28 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="초보환영"
+                                android:text="찜"
+                                android:textColor="#897697"
+                                android:textSize="6pt" />
+
+                        </GridLayout>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:columnCount="3"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:layout_height="32dp"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/classification_button"
+                                android:paddingLeft="20dp"
+                                android:paddingTop="3dp"
+                                android:paddingRight="20dp"
+                                android:paddingBottom="3dp"
+                                android:text="튀김/커틀릿"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -341,7 +402,7 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="보통"
+                                android:text="찌개/전골/스튜"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
 
@@ -353,46 +414,9 @@
                                 android:paddingTop="3dp"
                                 android:paddingRight="20dp"
                                 android:paddingBottom="3dp"
-                                android:text="어려움"
+                                android:text="도시락/간식"
                                 android:textColor="#897697"
                                 android:textSize="6pt" />
-
-                            <Button
-                                android:layout_height="32dp"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/classification_button"
-                                android:paddingLeft="20dp"
-                                android:paddingTop="3dp"
-                                android:paddingRight="20dp"
-                                android:paddingBottom="3dp"
-                                android:text="초보환영"
-                                android:textColor="#897697"
-                                android:textSize="6pt" />
-
-                            <Button
-                                android:layout_height="32dp"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/classification_button"
-                                android:paddingLeft="20dp"
-                                android:paddingTop="3dp"
-                                android:paddingRight="20dp"
-                                android:paddingBottom="3dp"
-                                android:text="보통"
-                                android:textColor="#897697"
-                                android:textSize="6pt" />
-
-                            <Button
-                                android:layout_height="32dp"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/classification_button"
-                                android:paddingLeft="20dp"
-                                android:paddingTop="3dp"
-                                android:paddingRight="20dp"
-                                android:paddingBottom="3dp"
-                                android:text="어려움"
-                                android:textColor="#897697"
-                                android:textSize="6pt" />
-
 
                         </GridLayout>
 
