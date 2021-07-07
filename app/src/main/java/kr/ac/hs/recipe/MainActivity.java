@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 앱 최초 실행 여부 판단
+/*        // 앱 최초 실행 여부 판단
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         boolean first = pref.getBoolean("isFirst", false);
         if(first==false){
@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
         int dayNum = calendar.get(Calendar.DAY_OF_WEEK); // 오늘 요일
         if (dayNum == 1) { // 일요일에만 데이터 업데이트 (주기 설정)
             updateData();
-        }
+        }*/
+
+        updateData();
 
         // Navigation 구성
         BottomNavigationView navView = findViewById(R.id.nav_view);
