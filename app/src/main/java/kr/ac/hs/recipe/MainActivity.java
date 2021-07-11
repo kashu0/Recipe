@@ -48,26 +48,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-/*        // 앱 최초 실행 여부 판단
+        //myRef.removeValue(); // drop all DB
+
+        // 앱 최초 실행 여부 판단
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         boolean first = pref.getBoolean("isFirst", false);
-        if(first==false){
+        if(!first){
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean("isFirst",true);
-            editor.commit();
+            editor.apply();
             updateData(); // 앱 최초 실행 시 데이터 갱신
-        }else{
         }
 
-        // 일주일에 한 번만 데이터 갱신
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // 최초 실행 이후, 일주일에 한 번만 데이터 갱신
         Calendar calendar = Calendar.getInstance(); // 오늘 날짜
-        int dayNum = calendar.get(Calendar.DAY_OF_WEEK); // 오늘 요일
-        if (dayNum == 1) { // 일요일에만 데이터 업데이트 (주기 설정)
+        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) { // 일요일에만 데이터 업데이트 (주기 설정)
             updateData();
-        }*/
-
-        updateData();
+        }
 
         // Navigation 구성
         BottomNavigationView navView = findViewById(R.id.nav_view);
