@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -44,6 +45,8 @@ public class Search extends Fragment {
     CustomAdapter adapter;
     Query sortbyKNM;
     List list = new ArrayList<>();
+    ToggleButton searchToggle;
+    int toggleMenu = 0; // 메뉴로 검색
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +63,25 @@ public class Search extends Fragment {
         listView = v.findViewById(R.id.searchlist);
         adapter = new CustomAdapter();
         listView.setAdapter(adapter);
+
+        // 검색 토글 (메뉴 <> 재료)
+        searchToggle = v.findViewById(R.id.searchToggle);
+
+        searchToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(searchToggle.isChecked()){
+                    //메뉴명으로 검색하기
+                    toggleMenu = 0;
+                }
+                
+                else {
+                    //재료명으로 검색하기
+                    toggleMenu = 1;
+                }
+            }
+        });
+
 
         // 검색 기능
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -92,7 +114,6 @@ public class Search extends Fragment {
             }
         });
 
-
         // for ~ 
         // 버튼 디자인
         /*LayoutInflater inf = getLayoutInflater();
@@ -106,16 +127,16 @@ public class Search extends Fragment {
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명1", "간략소개1") ;
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명2", "간략소개2") ;
         adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
-        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명3", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명4", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명5", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명6", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명7", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명8", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명9", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명10", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명11", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명12", "간략소개3") ;
+        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), "레시피명13", "간략소개3") ;
 
         // 목록 눌렀을 때 > 레시피 세부 페이지
 
