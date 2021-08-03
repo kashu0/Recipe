@@ -1,6 +1,8 @@
 package kr.ac.hs.recipe.ui.search;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import kr.ac.hs.recipe.R;
@@ -69,5 +76,10 @@ public class CustomAdapter extends BaseAdapter {
         item.setAbout(about);
 
         itemList.add(item);
+    }
+
+
+    public void clear() {
+        itemList.clear();
     }
 }
