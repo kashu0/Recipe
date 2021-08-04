@@ -34,10 +34,9 @@
                 android:layout_height="wrap_content"
                 android:hint="  메뉴 / 재료명을 선택 후 검색하세요!"
                 android:imeOptions="actionSearch"
-                android:inputType="text"
                 android:maxLines="1"
-                android:textSize="6.5pt"
-                android:textStyle="italic" />
+                android:inputType="text"
+                android:textSize="6.5pt"/>
 
         </LinearLayout>
 
@@ -85,6 +84,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/lv1"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -94,9 +94,10 @@
                                 android:paddingBottom="3dp"
                                 android:text="초보환영"
                                 android:textColor="#897697"
-                                android:textSize="6pt" />
+                                android:textSize="6pt"/>
 
                             <Button
+                                android:id="@+id/lv2"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -109,6 +110,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/lv3"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -152,6 +154,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/nation1"
                                 android:layout_width="80dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -165,6 +168,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/nation2"
                                 android:layout_width="80dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -178,6 +182,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/nation3"
                                 android:layout_width="80dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -191,6 +196,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/nation4"
                                 android:layout_width="80dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -212,6 +218,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/nation5"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -224,6 +231,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/nation6"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -236,6 +244,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/nation7"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -280,6 +289,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/ty1"
                                 android:layout_width="52dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -293,6 +303,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty2"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -305,6 +316,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty3"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -325,6 +337,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/ty4"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -337,6 +350,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty5"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -349,6 +363,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty6"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -369,6 +384,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/ty7"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -381,6 +397,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty8"
                                 android:layout_width="52dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -394,6 +411,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty9"
                                 android:layout_width="68dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -407,6 +425,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty10"
                                 android:layout_width="68dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -428,6 +447,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/ty11"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -440,6 +460,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty12"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -452,6 +473,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty13"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -472,6 +494,7 @@
                             android:orientation="horizontal">
 
                             <Button
+                                android:id="@+id/ty14"
                                 android:layout_width="68dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -485,6 +508,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty15"
                                 android:layout_width="68dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
@@ -498,6 +522,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty16"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/classification_button"
@@ -510,6 +535,7 @@
                                 android:textSize="6pt" />
 
                             <Button
+                                android:id="@+id/ty17"
                                 android:layout_width="52dp"
                                 android:layout_height="32dp"
                                 android:layout_margin="5dp"

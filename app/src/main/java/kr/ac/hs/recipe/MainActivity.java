@@ -31,7 +31,7 @@ import kr.ac.hs.recipe.recipeDB.stepData;
 
 public class MainActivity extends AppCompatActivity {
 
-    String key="1c74fe1f5913c684ec9bb14cc1dd45295904903af4c2012cb985cb757b1a322e";
+    String key = "1c74fe1f5913c684ec9bb14cc1dd45295904903af4c2012cb985cb757b1a322e";
     int start, end;
     int v_RECIPE_ID, v_NATION_CODE, v_TY_CODE, v_IRDNT_TY_CODE, v_COOKING_NO;
     String v_RECIPE_NM_KO, v_SUMRY, v_NATION_NM, v_TY_NM, v_COOKING_TIME, v_CALORIE, v_QNT, v_LEVEL_NM, v_IRDNT_CODE, v_IMG_URL, v_DET_URL, v_IRDNT_NM, v_IRDNT_CPCTY, v_IRDNT_TY_NM, v_COOKING_DC, v_STRE_STEP_IMAGE_URL, v_STEP_TIP;
@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         // 앱 최초 실행 여부 판단
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         boolean first = pref.getBoolean("isFirst", false);
-        if(!first){
+        if (!first) {
             SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("isFirst",true);
+            editor.putBoolean("isFirst", true);
             editor.apply();
             updateData(); // 앱 최초 실행 시 데이터 갱신
         }
@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
-    
+
     // 데이터 update
-    public void updateData(){
+    public void updateData() {
         Thread getData = new getData();
         Thread getData_IRDNT = new getData_IRDNT();
         Thread getData_STEP = new getData_STEP();
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             JSONObject obj = new JSONObject(str);
             JSONArray rows = obj.getJSONObject("Grid_20150827000000000226_1").getJSONArray("row");
-            for(int i=0; i < rows.length(); i ++){
+            for (int i = 0; i < rows.length(); i++) {
                 JSONObject jObject = rows.getJSONObject(i);
                 v_RECIPE_ID = jObject.getInt("RECIPE_ID");
                 v_RECIPE_NM_KO = jObject.getString("RECIPE_NM_KO");
@@ -128,17 +128,19 @@ public class MainActivity extends AppCompatActivity {
                 recipeData = new recipeData(v_RECIPE_ID, v_RECIPE_NM_KO, v_SUMRY, v_NATION_CODE, v_NATION_NM, v_TY_CODE, v_TY_NM, v_COOKING_TIME, v_CALORIE, v_QNT, v_LEVEL_NM, v_IRDNT_CODE, v_IMG_URL, v_DET_URL);
                 recipeDBRef.child("recipe_ID").child(String.valueOf(v_RECIPE_ID)).setValue(recipeData);
             }
-        }catch (Exception e ){}
+        } catch (Exception e) {
+        }
     }
 
     // 레시피 재료정보
     // 아니 어이가 없네!!!!!!! [ ] < 이거 json 파싱할때 특수문자 오류나나봄!!!!!! 해결하기
+    // record 자르기 전에 "rows.getJSONObject(i);"를 replace 한 후에 jObject에 넣기 [대책1] 
     // replace 하거나... 다른 방법 생각해보기
     public void JsonParse_IRDNT(String str) {
         try {
             JSONObject obj = new JSONObject(str);
             JSONArray rows = obj.getJSONObject("Grid_20150827000000000227_1").getJSONArray("row");
-            for(int i=0; i < rows.length(); i ++){
+            for (int i = 0; i < rows.length(); i++) {
                 JSONObject jObject = rows.getJSONObject(i);
                 v_RECIPE_ID = jObject.getInt("RECIPE_ID");
                 v_IRDNT_NM = jObject.getString("IRDNT_NM");
@@ -150,7 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 ingredientsData = new ingredientsData(v_RECIPE_ID, v_IRDNT_NM, v_IRDNT_CPCTY, v_IRDNT_TY_CODE, v_IRDNT_TY_NM);
                 recipeDBRef.child("recipe_ID").child(String.valueOf(v_RECIPE_ID)).child("IRDNT_LIST").child(String.valueOf(v_IRDNT_NM)).setValue(ingredientsData);
             }
-        }catch (Exception e ){}
+        } catch (Exception e) {
+        }
     }
 
     // 레시피 과정정보
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             JSONObject obj = new JSONObject(str);
             JSONArray rows = obj.getJSONObject("Grid_20150827000000000228_1").getJSONArray("row");
-            for(int i=0; i < rows.length(); i ++){
+            for (int i = 0; i < rows.length(); i++) {
                 JSONObject jObject = rows.getJSONObject(i);
                 v_RECIPE_ID = jObject.getInt("RECIPE_ID");
                 v_COOKING_NO = jObject.getInt("COOKING_NO");
@@ -170,21 +173,22 @@ public class MainActivity extends AppCompatActivity {
                 stepData = new stepData(v_RECIPE_ID, v_COOKING_NO, v_COOKING_DC, v_STRE_STEP_IMAGE_URL, v_STEP_TIP);
                 recipeDBRef.child("recipe_ID").child(String.valueOf(v_RECIPE_ID)).child("STEP").child(String.valueOf(v_COOKING_NO)).setValue(stepData);
             }
-        }catch (Exception e ){}
+        } catch (Exception e) {
+        }
     }
 
     // 레시피 기본정보
     class getData extends Thread {
         public void run() {
             //http://211.237.50.150:7080/openapi/1c74fe1f5913c684ec9bb14cc1dd45295904903af4c2012cb985cb757b1a322e/json/Grid_20150827000000000226_1/1/10
-            String queryUrl="http://211.237.50.150:7080/openapi/" + key + "/json/Grid_20150827000000000226_1/1/537";
+            String queryUrl = "http://211.237.50.150:7080/openapi/" + key + "/json/Grid_20150827000000000226_1/1/537";
             try {
                 URL url = new URL(queryUrl);
                 StringBuilder sb = new StringBuilder();
-                BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
+                BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
                 String result;
-                while((result = br.readLine())!=null){
-                    sb.append(result+"\n");
+                while ((result = br.readLine()) != null) {
+                    sb.append(result + "\n");
                 }
                 result = sb.toString();
                 JsonParse(result);
@@ -200,9 +204,10 @@ public class MainActivity extends AppCompatActivity {
     // 레시피 재료정보
     class getData_IRDNT extends Thread {
         public void run() {
-            start = 0; end = 0; // 초기화
+            start = 0;
+            end = 0; // 초기화
             //http://211.237.50.150:7080/openapi/1c74fe1f5913c684ec9bb14cc1dd45295904903af4c2012cb985cb757b1a322e/json/Grid_20150827000000000227_1/1/6104
-            for (start = 1; start < 6104; start+=1000) {
+            for (start = 1; start < 6104; start += 1000) {
                 end = start + 999; // 한 번에 1000개씩 호출 가능
                 String queryUrl = "http://211.237.50.150:7080/openapi/" + key + "/json/Grid_20150827000000000227_1/" + start + "/" + end;
                 try {
@@ -228,9 +233,10 @@ public class MainActivity extends AppCompatActivity {
     // 레시피 과정정보
     class getData_STEP extends Thread {
         public void run() {
-            start = 0; end = 0; // 초기화
+            start = 0;
+            end = 0; // 초기화
             //http://211.237.50.150:7080/openapi/1c74fe1f5913c684ec9bb14cc1dd45295904903af4c2012cb985cb757b1a322e/json/Grid_20150827000000000228_1/1/5
-            for (start = 1; start < 3022; start+=1000) {
+            for (start = 1; start < 3022; start += 1000) {
                 end = start + 999; // 한 번에 1000개씩 호출 가능
                 String queryUrl = "http://211.237.50.150:7080/openapi/" + key + "/json/Grid_20150827000000000228_1/" + start + "/" + end;
                 try {

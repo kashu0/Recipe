@@ -1,5 +1,7 @@
 package kr.ac.hs.recipe.ui.search;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -46,6 +50,10 @@ import kr.ac.hs.recipe.R;
 import kr.ac.hs.recipe.recipeDB.ingredientsData;
 import kr.ac.hs.recipe.recipeDB.recipeData;
 
+import static android.content.Context.ACTIVITY_SERVICE;
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class Search extends Fragment {
 
     EditText searchText;
@@ -53,6 +61,13 @@ public class Search extends Fragment {
     ListView listView;
     CustomAdapter adapter;
     ToggleButton searchToggle;
+    int[] lvBtn = {R.id.lv1, R.id.lv2, R.id.lv3}; // 난이도
+    int[] nationBtn = {R.id.nation1, R.id.nation2, R.id.nation3, R.id.nation4, R.id.nation5, R.id.nation6, R.id.nation7}; // 유형분류
+    int[] tyBtn =  {R.id.ty1, R.id.ty2, R.id.ty3, R.id.ty4, R.id.ty5, R.id.ty6, R.id.ty7, R.id.ty8, R.id.ty9, R.id.ty10, R.id.ty11, R.id.ty12, R.id.ty13, R.id.ty14, R.id.ty15, R.id.ty16, R.id.ty17}; // 음식분류
+    Button[] lvBtnArr = new Button[3];
+    Button[] nationBtnArr = new Button[7];
+    Button[] tyBtnArr = new Button[17];
+    String searchBtnText;
     int toggle = 0;
 
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
@@ -71,8 +86,133 @@ public class Search extends Fragment {
         // 검색목록
         listView = v.findViewById(R.id.searchlist);
         adapter = new CustomAdapter();
-        listView.setAdapter(adapter);
 
+        // 분류버튼 검색 기능
+        // 난이도 버튼
+        for (int i = 0; i < 3; i++) {
+            final int INDEX;
+            INDEX = i;
+            lvBtnArr[INDEX] = v.findViewById(lvBtn[INDEX]);
+            lvBtnArr[INDEX].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 화면 전환 (분류버튼 <> 검색목록)
+                    classification.setVisibility(View.INVISIBLE);
+                    searchList.setVisibility(View.VISIBLE);
+
+                    searchBtnText = String.valueOf(lvBtnArr[INDEX].getText());
+                    searchText.setText("난이도 분류 : " + searchBtnText);
+
+                    Toast.makeText(getActivity(), "검색중", Toast.LENGTH_LONG).show();
+                    recipeDBRef.child("recipe_ID").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                try {
+                                    recipeData getResult = postSnapshot.getValue(recipeData.class);
+                                    if (getResult.LEVEL_NM.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
+                                        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                        listView.setAdapter(adapter);
+                                    }
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+
+                        }
+                    });
+                    Toast.makeText(getActivity(), "난이도 분류 " + searchBtnText + "의 검색 결과입니다.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        // 유형분류 버튼
+        for (int i = 0; i < 7; i++) {
+            final int INDEX;
+            INDEX = i;
+            nationBtnArr[INDEX] = v.findViewById(nationBtn[i]);
+            nationBtnArr[INDEX].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 화면 전환 (분류버튼 <> 검색목록)
+                    classification.setVisibility(View.INVISIBLE);
+                    searchList.setVisibility(View.VISIBLE);
+
+                    searchBtnText = String.valueOf(nationBtnArr[INDEX].getText());
+                    searchText.setText("유형분류 : " + searchBtnText);
+
+                    Toast.makeText(getActivity(), "검색중", Toast.LENGTH_LONG).show();
+                    recipeDBRef.child("recipe_ID").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                try {
+                                    recipeData getResult = postSnapshot.getValue(recipeData.class);
+                                    if (getResult.NATION_NAME.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
+                                        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                        listView.setAdapter(adapter);
+                                    }
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+
+                        }
+                    });
+                    Toast.makeText(getActivity(), "유형분류 " + searchBtnText + "의 검색 결과입니다.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        // 음식분류 버튼
+        for (int i = 0; i < 17; i++) {
+            final int INDEX;
+            INDEX = i;
+            tyBtnArr[INDEX] = v.findViewById(tyBtn[i]);
+            tyBtnArr[INDEX].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 화면 전환 (분류버튼 <> 검색목록)
+                    classification.setVisibility(View.INVISIBLE);
+                    searchList.setVisibility(View.VISIBLE);
+
+                    searchBtnText = String.valueOf(tyBtnArr[INDEX].getText());
+                    searchText.setText("음식분류 : " + searchBtnText);
+
+                    Toast.makeText(getActivity(), "검색중", Toast.LENGTH_LONG).show();
+                    recipeDBRef.child("recipe_ID").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                try {
+                                    recipeData getResult = postSnapshot.getValue(recipeData.class);
+                                    if (getResult.TY_NM.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
+                                        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                        listView.setAdapter(adapter);
+                                    }
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+
+                        }
+                    });
+                    Toast.makeText(getActivity(), "음식분류 " + searchBtnText + "의 검색 결과입니다.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        
+        // 검색창 검색 기능
         // 검색 토글 (메뉴 <> 재료)
         searchToggle = v.findViewById(R.id.searchToggle);
 
@@ -87,18 +227,19 @@ public class Search extends Fragment {
             }
         });
 
-        // 검색 기능
-        // 1. 키보드 자판을 내려야 검색 결과가 출력되는 문제!! 해결하기!!
         // 2. 이미지 링크 > 이미지 (어케함?????????)
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 adapter.clear(); // 검색 결과 목록 초기화
-                boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
+                    // 화면 전환 (분류버튼 <> 검색목록)
+                    classification.setVisibility(View.INVISIBLE);
+                    searchList.setVisibility(View.VISIBLE);
+
                     if (toggle == 0) { //메뉴명으로 검색하기
-                        Toast.makeText(getActivity(), "메뉴명에 " +  searchText.getText() + "(이)가 포함된 검색 결과입니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "검색중", Toast.LENGTH_LONG).show();
                         recipeDBRef.child("recipe_ID").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
@@ -106,14 +247,8 @@ public class Search extends Fragment {
                                     try {
                                         recipeData getResult = postSnapshot.getValue(recipeData.class);
                                         if (getResult.RECIPE_NM_KO.contains(String.valueOf(searchText.getText()))) { // 검색 내용이 포함된 메뉴만 반환
-
-                                            //String[] result = new String[]{getResult.RECIPE_NM_KO, getResult.SUMRY, getResult.IMG_URL};
-                                            /*try {
-                                                adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
-                                            } catch (Exception e) {
-                                                //adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
-                                            }*/
                                             adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                            listView.setAdapter(adapter);
                                         }
                                     } catch (Exception e) {
                                     }
@@ -125,20 +260,22 @@ public class Search extends Fragment {
 
                             }
                         });
-                    }
-                    else { //재료명으로 검색하기
-                        Toast.makeText(getActivity(), "재료에 " +  searchText.getText() + "(이)가 포함된 검색 결과입니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "메뉴명에 " + searchText.getText() + "(이)가 포함된 검색 결과입니다.", Toast.LENGTH_LONG).show();
+                    } else { //재료명으로 검색하기
+                        Toast.makeText(getActivity(), "검색중", Toast.LENGTH_LONG).show();
                         recipeDBRef.child("recipe_ID").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
                                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                                     try {
+                                        recipeData getResult = postSnapshot.getValue(recipeData.class);
                                         for (DataSnapshot postSnapshot2 : postSnapshot.child("IRDNT_LIST").getChildren()) { // 재료 검색
                                             try {
-                                                ingredientsData getResult = postSnapshot2.getValue(ingredientsData.class);
-                                                if (getResult.IRDNT_NM.contains(String.valueOf(searchText.getText()))) { // 검색 내용(재료)이 포함된 메뉴만 반환
-
-                                                    // 해당 재료가 포함된 메뉴의 레시피 ID
+                                                ingredientsData getIRDNT = postSnapshot2.getValue(ingredientsData.class);
+                                                if (getIRDNT.IRDNT_NM.contains(String.valueOf(searchText.getText())) && getResult.RECIPE_ID == getIRDNT.RECIPE_ID) { // 검색 내용(재료)이 포함된 메뉴만 반환
+                                                    adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                                    listView.setAdapter(adapter);
+                                                   /* // 해당 재료가 포함된 메뉴의 레시피 ID
                                                     recipeDBRef.child("recipe_ID").child(String.valueOf(getResult.RECIPE_ID)).addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot snapshot) {
@@ -157,7 +294,7 @@ public class Search extends Fragment {
                                                         public void onCancelled(DatabaseError error) {
 
                                                         }
-                                                    });
+                                                    });*/
                                                 }
                                             } catch (Exception e) {
                                             }
@@ -171,41 +308,23 @@ public class Search extends Fragment {
                             public void onCancelled(DatabaseError error) {
 
                             }
-
-
-/*        // 검색 기능
-        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if(actionId == EditorInfo.IME_ACTION_SEARCH){
-                    Toast.makeText(getActivity(), "search : " + searchText.getText(), Toast.LENGTH_LONG).show();
-
-                    // < 여기에 : if (검색 결과가 존재한다면) 추가하기
-                    classification.setVisibility(View.INVISIBLE);
-                    searchList.setVisibility(View.VISIBLE);
-
-                    handled = true;
-                }
-                return handled;
-            }*/
                         });
+                        Toast.makeText(getActivity(), "재료에 " + searchText.getText() + "(이)가 포함된 검색 결과입니다.", Toast.LENGTH_LONG).show();
                     }
-
-                    classification.setVisibility(View.INVISIBLE);
-                    searchList.setVisibility(View.VISIBLE);
-
-                    handled = true;
                 }
-                return handled;
+
+                // 키보드 자동 숨기기
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchText.getWindowToken(), 0);
+
+                return true;
             }
 
         });
 
-        // 분류 버튼 눌렀을 때 > 해당 목록 리스트
-
         // 목록 눌렀을 때 > 레시피 세부 페이지
 
+        // 뒤로가기 클릭시 기존 분류버튼 페이지로 돌아가는 방법 (그냥 버튼을 하나 추가해도..?)
 
         return v;
     }
