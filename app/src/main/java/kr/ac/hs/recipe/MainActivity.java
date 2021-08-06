@@ -1,6 +1,7 @@
 package kr.ac.hs.recipe;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -28,6 +29,7 @@ import java.util.Calendar;
 import kr.ac.hs.recipe.recipeDB.ingredientsData;
 import kr.ac.hs.recipe.recipeDB.recipeData;
 import kr.ac.hs.recipe.recipeDB.stepData;
+import kr.ac.hs.recipe.ui.LoadingActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, LoadingActivity.class); // 로딩 화면
+        startActivity(intent);
 
         //myRef.removeValue(); // drop all DB
 
