@@ -11,49 +11,62 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import kr.ac.hs.recipe.MainActivity;
 import kr.ac.hs.recipe.R;
 
 public class CustomAdapter extends BaseAdapter {
 
-    ImageView imageView;
-    TextView nameView, aboutView;
     private ArrayList<ListView> itemList = new ArrayList<ListView>() ;
 
     public CustomAdapter() {
 
     }
 
+    // 처음 출력할 item 개수
     @Override
     public int getCount() {
         return itemList.size() ;
+        //return 10;
     }
 
     @Override
-    public View getView(int position, View v, ViewGroup parent) {
-        final int pos = position;
+    public View getView(int position, View convertView, ViewGroup parent) {
         final Context context = parent.getContext();
+        View v = convertView;
+        ViewHolder holder;
 
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.searchlist_layout, parent, false);
-        }
 
-        imageView = v.findViewById(R.id.searchlist_img) ;
-        nameView = v.findViewById(R.id.searchlist_name) ;
-        aboutView = v.findViewById(R.id.searchlist_about) ;
+            holder = new ViewHolder();
+            holder.imageView = v.findViewById(R.id.searchlist_img);
+            holder.nameView = v.findViewById(R.id.searchlist_name) ;
+            holder.aboutView = v.findViewById(R.id.searchlist_about) ;
+
+            v.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         ListView listItem = itemList.get(position);
 
-        imageView.setImageDrawable(listItem.getImg());
-        nameView.setText(listItem.getName());
-        aboutView.setText(listItem.getAbout());
+        holder.imageView.setImageBitmap(listItem.getBImg());
+        holder.nameView.setText(listItem.getName());
+        holder.aboutView.setText(listItem.getAbout());
 
         return v;
     }
@@ -68,18 +81,54 @@ public class CustomAdapter extends BaseAdapter {
         return itemList.get(position) ;
     }
 
-    public void addItem(Drawable img, String name, String about) {
+    public void addItem(String url, String name, String about) {
         ListView item = new ListView();
 
-        item.setImg(img);
+        Bitmap img = urlToBitmap(url); // url > bitmap
+        item.setBImg(img);
         item.setName(name);
         item.setAbout(about);
 
         itemList.add(item);
     }
 
+    //URL을 받아 Bitmap 파일로 전환
+    public Bitmap urlToBitmap(final String Url){
+        final Bitmap[] bitmap = new Bitmap[1];
+        Thread mThread = new Thread(){
+            @Override
+            public void run(){
+                try {
+                    URL url = new URL(Url);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmap[0] = BitmapFactory.decodeStream(is);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        mThread.start();
+
+        try{
+            //멀티쓰레드 작업 중 서브스레드의 결과를 메인스레드에 적용시켜야 할 필요가 있는 경우
+            //메인스레드의 필요한 작업이 종요할 때 까지 대기하도록 하는 메서드
+            mThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bitmap[0];
+    }
 
     public void clear() {
         itemList.clear();
+    }
+
+    public class ViewHolder
+    {
+        public ImageView imageView;
+        public TextView nameView, aboutView;
     }
 }

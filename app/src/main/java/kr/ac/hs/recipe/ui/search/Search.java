@@ -96,6 +96,9 @@ public class Search extends Fragment {
             lvBtnArr[INDEX].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    adapter.clear(); // 검색 결과 목록 초기화
+                    searchText.clearFocus();
+
                     // 화면 전환 (분류버튼 <> 검색목록)
                     classification.setVisibility(View.INVISIBLE);
                     searchList.setVisibility(View.VISIBLE);
@@ -111,7 +114,7 @@ public class Search extends Fragment {
                                 try {
                                     recipeData getResult = postSnapshot.getValue(recipeData.class);
                                     if (getResult.LEVEL_NM.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
-                                        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                        adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
                                         listView.setAdapter(adapter);
                                     }
                                 } catch (Exception e) {
@@ -137,6 +140,9 @@ public class Search extends Fragment {
             nationBtnArr[INDEX].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    adapter.clear(); // 검색 결과 목록 초기화
+                    searchText.clearFocus();
+
                     // 화면 전환 (분류버튼 <> 검색목록)
                     classification.setVisibility(View.INVISIBLE);
                     searchList.setVisibility(View.VISIBLE);
@@ -152,7 +158,7 @@ public class Search extends Fragment {
                                 try {
                                     recipeData getResult = postSnapshot.getValue(recipeData.class);
                                     if (getResult.NATION_NAME.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
-                                        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                        adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
                                         listView.setAdapter(adapter);
                                     }
                                 } catch (Exception e) {
@@ -178,6 +184,9 @@ public class Search extends Fragment {
             tyBtnArr[INDEX].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    adapter.clear(); // 검색 결과 목록 초기화
+                    searchText.clearFocus();
+
                     // 화면 전환 (분류버튼 <> 검색목록)
                     classification.setVisibility(View.INVISIBLE);
                     searchList.setVisibility(View.VISIBLE);
@@ -193,7 +202,7 @@ public class Search extends Fragment {
                                 try {
                                     recipeData getResult = postSnapshot.getValue(recipeData.class);
                                     if (getResult.TY_NM.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
-                                        adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                        adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
                                         listView.setAdapter(adapter);
                                     }
                                 } catch (Exception e) {
@@ -227,18 +236,27 @@ public class Search extends Fragment {
             }
         });
 
-        // 2. 이미지 링크 > 이미지 (어케함?????????)
+        /*searchText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                searchText.getText().clear();
+                classification.setVisibility(View.VISIBLE);
+                searchList.setVisibility(View.INVISIBLE);
+            }
+        });*/
+
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                adapter.clear(); // 검색 결과 목록 초기화
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchText.clearFocus();
 
                     // 화면 전환 (분류버튼 <> 검색목록)
                     classification.setVisibility(View.INVISIBLE);
                     searchList.setVisibility(View.VISIBLE);
 
                     if (toggle == 0) { //메뉴명으로 검색하기
+                        adapter.clear(); // 검색 결과 목록 초기화
                         Toast.makeText(getActivity(), "검색중", Toast.LENGTH_LONG).show();
                         recipeDBRef.child("recipe_ID").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -247,7 +265,7 @@ public class Search extends Fragment {
                                     try {
                                         recipeData getResult = postSnapshot.getValue(recipeData.class);
                                         if (getResult.RECIPE_NM_KO.contains(String.valueOf(searchText.getText()))) { // 검색 내용이 포함된 메뉴만 반환
-                                            adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                            adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
                                             listView.setAdapter(adapter);
                                         }
                                     } catch (Exception e) {
@@ -262,6 +280,7 @@ public class Search extends Fragment {
                         });
                         Toast.makeText(getActivity(), "메뉴명에 " + searchText.getText() + "(이)가 포함된 검색 결과입니다.", Toast.LENGTH_LONG).show();
                     } else { //재료명으로 검색하기
+                        adapter.clear(); // 검색 결과 목록 초기화
                         Toast.makeText(getActivity(), "검색중", Toast.LENGTH_LONG).show();
                         recipeDBRef.child("recipe_ID").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -272,29 +291,10 @@ public class Search extends Fragment {
                                         for (DataSnapshot postSnapshot2 : postSnapshot.child("IRDNT_LIST").getChildren()) { // 재료 검색
                                             try {
                                                 ingredientsData getIRDNT = postSnapshot2.getValue(ingredientsData.class);
-                                                if (getIRDNT.IRDNT_NM.contains(String.valueOf(searchText.getText())) && getResult.RECIPE_ID == getIRDNT.RECIPE_ID) { // 검색 내용(재료)이 포함된 메뉴만 반환
-                                                    adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult.RECIPE_NM_KO, getResult.SUMRY);
+                                                // equals가 나을지 contains가 나을지?????
+                                                if (getIRDNT.IRDNT_NM.equals(String.valueOf(searchText.getText())) && getResult.RECIPE_ID == getIRDNT.RECIPE_ID) { // 검색 내용(재료)이 포함된 메뉴만 반환
+                                                    adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
                                                     listView.setAdapter(adapter);
-                                                   /* // 해당 재료가 포함된 메뉴의 레시피 ID
-                                                    recipeDBRef.child("recipe_ID").child(String.valueOf(getResult.RECIPE_ID)).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot snapshot) {
-                                                            try {
-                                                                recipeData getResult2 = postSnapshot.getValue(recipeData.class);
-
-                                                                //String[] result = new String[]{getResult2.RECIPE_NM_KO, getResult2.SUMRY, getResult2.IMG_URL};
-                                                                adapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mainimg), getResult2.RECIPE_NM_KO, getResult2.SUMRY);
-
-                                                            } catch (Exception e) {
-                                                            }
-
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(DatabaseError error) {
-
-                                                        }
-                                                    });*/
                                                 }
                                             } catch (Exception e) {
                                             }
@@ -325,6 +325,8 @@ public class Search extends Fragment {
         // 목록 눌렀을 때 > 레시피 세부 페이지
 
         // 뒤로가기 클릭시 기존 분류버튼 페이지로 돌아가는 방법 (그냥 버튼을 하나 추가해도..?)
+
+
 
         return v;
     }
