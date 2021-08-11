@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -20,6 +23,7 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,6 +62,7 @@ public class Search extends Fragment {
 
     EditText searchText;
     LinearLayout classification, searchList;
+    ImageView backBtn;
     ListView listView;
     CustomAdapter adapter;
     ToggleButton searchToggle;
@@ -82,6 +87,8 @@ public class Search extends Fragment {
         searchText = v.findViewById(R.id.searchText);
         classification = v.findViewById(R.id.classification_layout);
         searchList = v.findViewById(R.id.searchlist_layout);
+        backBtn = v.findViewById(R.id.backtoSearchBtn);
+        backBtn.setColorFilter(Color.parseColor("#584769"));
 
         // 검색목록
         listView = v.findViewById(R.id.searchlist);
@@ -324,9 +331,15 @@ public class Search extends Fragment {
 
         // 목록 눌렀을 때 > 레시피 세부 페이지
 
-        // 뒤로가기 클릭시 기존 분류버튼 페이지로 돌아가는 방법 (그냥 버튼을 하나 추가해도..?)
-
-
+        // 분류버튼 목록 페이지로 돌아가는 버튼
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchText.getText().clear();
+                classification.setVisibility(View.VISIBLE);
+                searchList.setVisibility(View.INVISIBLE);
+            }
+        });
 
         return v;
     }
