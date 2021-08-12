@@ -3,7 +3,6 @@ package kr.ac.hs.recipe.ui.search;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,34 +10,30 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
-import kr.ac.hs.recipe.MainActivity;
 import kr.ac.hs.recipe.R;
 
 public class CustomAdapter extends BaseAdapter {
-
     private ArrayList<ListView> itemList = new ArrayList<ListView>() ;
+   // private LayoutInflater inflater;
 
     public CustomAdapter() {
 
     }
 
-    // 처음 출력할 item 개수
+    /*public CustomAdapter(Context context, ArrayList<ListView> list){
+        this.itemList = list;
+        this.inflater = LayoutInflater.from(context);
+    }*/
+
     @Override
     public int getCount() {
         return itemList.size() ;
-        //return 10;
     }
 
     @Override

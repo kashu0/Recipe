@@ -1,7 +1,6 @@
 package kr.ac.hs.recipe.ui.search;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 public class ListView {
     private Bitmap Img;
