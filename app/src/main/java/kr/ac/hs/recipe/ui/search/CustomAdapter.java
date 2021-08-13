@@ -20,16 +20,10 @@ import kr.ac.hs.recipe.R;
 
 public class CustomAdapter extends BaseAdapter {
     private ArrayList<ListView> itemList = new ArrayList<ListView>() ;
-   // private LayoutInflater inflater;
 
     public CustomAdapter() {
 
     }
-
-    /*public CustomAdapter(Context context, ArrayList<ListView> list){
-        this.itemList = list;
-        this.inflater = LayoutInflater.from(context);
-    }*/
 
     @Override
     public int getCount() {
@@ -59,6 +53,8 @@ public class CustomAdapter extends BaseAdapter {
 
         ListView listItem = itemList.get(position);
 
+        //Bitmap img = urlToBitmap(listItem.getBImg());
+        //holder.imageView.setImageBitmap(img);
         holder.imageView.setImageBitmap(listItem.getBImg());
         holder.nameView.setText(listItem.getName());
         holder.aboutView.setText(listItem.getAbout());
@@ -80,6 +76,7 @@ public class CustomAdapter extends BaseAdapter {
         ListView item = new ListView();
 
         Bitmap img = urlToBitmap(url); // url > bitmap
+        //item.setBImg(url);
         item.setBImg(img);
         item.setName(name);
         item.setAbout(about);

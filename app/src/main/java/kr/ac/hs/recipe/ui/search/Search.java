@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.fragment.app.Fragment;
@@ -26,20 +28,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 import kr.ac.hs.recipe.R;
 import kr.ac.hs.recipe.recipeDB.ingredientsData;
 import kr.ac.hs.recipe.recipeDB.recipeData;
 
-public class Search extends Fragment {// implements AbsListView.OnScrollListener {
+public class Search extends Fragment {
 
     EditText searchText;
     LinearLayout classification, searchList, searchLoading;
     ImageView backBtn;
     ListView listView;
-    ArrayList<kr.ac.hs.recipe.ui.search.ListView> list;
-    boolean lastItemVisibleFlag = false; // 화면에 리스트의 마지막 아이템이 보여지는지 체크
     CustomAdapter adapter;
     ToggleButton searchToggle;
     int[] lvBtn = {R.id.lv1, R.id.lv2, R.id.lv3}; // 난이도
@@ -49,10 +47,9 @@ public class Search extends Fragment {// implements AbsListView.OnScrollListener
     Button[] nationBtnArr = new Button[7];
     Button[] tyBtnArr = new Button[17];
     String searchBtnText;
-    int toggle = 0, page = 0;
-    final int OFFSET = 10; // 데이터 개수
-    //ProgressBar progressBar; // 목록 데이터 로딩중
-    boolean mLockListView = false; // 데이터 불러올때 중복안되게 하기위한 변수
+    int toggle = 0;
+
+    TextView textView;
 
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference recipeDBRef = myRef.child("recipeDB");
@@ -69,12 +66,9 @@ public class Search extends Fragment {// implements AbsListView.OnScrollListener
         backBtn = v.findViewById(R.id.backtoSearchBtn);
         backBtn.setColorFilter(Color.parseColor("#80688A"));
         listView = v.findViewById(R.id.searchlist);
-        //progressBar = v.findViewById(R.id.progressbar);
         adapter = new CustomAdapter();
 
-        /*list = new ArrayList<kr.ac.hs.recipe.ui.search.ListView>();
-        adapter = new CustomAdapter(getContext(), list);*/
-
+        textView = v.findViewById(R.id.searchRT);
 
         // 분류버튼 검색 기능
         // 난이도 버튼
@@ -101,15 +95,6 @@ public class Search extends Fragment {// implements AbsListView.OnScrollListener
                             for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                                 try {
                                     recipeData getResult = postSnapshot.getValue(recipeData.class);
-                                    /*if(adapter.getCount() % 10 != 0 || adapter.getCount() == 0){
-                                        if (getResult.LEVEL_NM.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
-                                            adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
-                                        }
-                                    }
-                                    else {
-                                        listView.setAdapter(adapter);
-                                        //progressBar.setVisibility(View.GONE);
-                                    }*/
                                     if (getResult.LEVEL_NM.equals(searchBtnText)) { // 검색 내용이 포함된 메뉴만 반환
                                         adapter.addItem(getResult.IMG_URL, getResult.RECIPE_NM_KO, getResult.SUMRY);
                                     }
@@ -127,9 +112,6 @@ public class Search extends Fragment {// implements AbsListView.OnScrollListener
                     });
                 }
             });
-            //progressBar.setVisibility(View.GONE);
-            //listView.setOnScrollListener((AbsListView.OnScrollListener) this);
-            //getItem();
         }
 
         // 유형분류 버튼
@@ -236,15 +218,6 @@ public class Search extends Fragment {// implements AbsListView.OnScrollListener
             }
         });
 
-        /*searchText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                searchText.getText().clear();
-                classification.setVisibility(View.VISIBLE);
-                searchList.setVisibility(View.INVISIBLE);
-            }
-        });*/
-
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -322,8 +295,6 @@ public class Search extends Fragment {// implements AbsListView.OnScrollListener
 
         });
 
-        // 목록 눌렀을 때 > 레시피 세부 페이지
-
         // 분류버튼 목록 페이지로 돌아가는 버튼
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,46 +310,16 @@ public class Search extends Fragment {// implements AbsListView.OnScrollListener
             }
         });
 
+        // 목록 눌렀을 때 > 레시피 세부 페이지
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               // textView.setText();
+                Toast.makeText(getActivity(), position+1 + " 번째 선택! ", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         return v;
     }
-
-/*    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lastItemVisibleFlag && mLockListView == false) {
-           //progressBar.setVisibility(View.VISIBLE);
-            getItem();
-        }
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        // firstVisibleItem : 화면에 보이는 첫번째 리스트의 아이템 번호.
-        // visibleItemCount : 화면에 보이는 리스트 아이템의 갯수
-        // totalItemCount : 리스트 전체의 총 갯수
-        // 리스트의 갯수가 0개 이상이고, 화면에 보이는 맨 하단까지의 아이템 갯수가 총 갯수보다 크거나 같을때.. 즉 리스트의 끝일때. true
-        lastItemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
-    }
-
-    private void getItem() {
-        // 리스트에 다음 데이터를 입력할 동안에 이 메소드가 또 호출되지 않도록 mLockListView 를 true로 설정한다.
-        mLockListView = true;
-
-        for(int i = 0; i < 10; i++){
-
-        }
-
-        // 1초 뒤 프로그레스바를 감추고 데이터를 갱신하고, 중복 로딩 체크하는 Lock을 했던 mLockListView변수를 풀어준다.
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                page++;
-                adapter.notifyDataSetChanged();
-                //progressBar.setVisibility(View.GONE);
-                mLockListView = false;
-            }
-        }, 1000);
-    }*/
-
 }

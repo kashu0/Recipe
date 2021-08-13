@@ -596,12 +596,6 @@
                 android:padding="10dp"
                 android:visibility="invisible">
 
-                <!--<ProgressBar
-                    android:id="@+id/progressbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"/>
--->
                 <ListView
                     android:id="@+id/searchlist"
                     android:layout_width="match_parent"

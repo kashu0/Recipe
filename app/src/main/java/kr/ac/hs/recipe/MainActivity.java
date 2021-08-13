@@ -3,8 +3,10 @@ package kr.ac.hs.recipe;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -12,8 +14,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,19 +28,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Calendar;
+import java.time.LocalDate;
 
 import kr.ac.hs.recipe.recipeDB.ingredientsData;
 import kr.ac.hs.recipe.recipeDB.recipeData;
 import kr.ac.hs.recipe.recipeDB.stepData;
 import kr.ac.hs.recipe.ui.LoadingActivity;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity {
 
     String key = "1c74fe1f5913c684ec9bb14cc1dd45295904903af4c2012cb985cb757b1a322e";
     int start, end;
     int v_RECIPE_ID, v_NATION_CODE, v_TY_CODE, v_IRDNT_TY_CODE, v_COOKING_NO;
-    String v_RECIPE_NM_KO, v_SUMRY, v_NATION_NM, v_TY_NM, v_COOKING_TIME, v_CALORIE, v_QNT, v_LEVEL_NM, v_IRDNT_CODE, v_IMG_URL, v_DET_URL, v_IRDNT_NM, v_IRDNT_CPCTY, v_IRDNT_TY_NM, v_COOKING_DC, v_STRE_STEP_IMAGE_URL, v_STEP_TIP;
+    String v_RECIPE_NM_KO, v_SUMRY, v_NATION_NM, v_TY_NM, v_COOKING_TIME, v_CALORIE, v_QNT, v_LEVEL_NM, v_IRDNT_CODE, v_IRDNT_NM, v_IRDNT_CPCTY, v_IRDNT_TY_NM, v_COOKING_DC, v_STRE_STEP_IMAGE_URL, v_STEP_TIP, v_IMG_URL, v_DET_URL;
+    /*String img_url, det_url;
+    Bitmap v_IMG_URL, v_DET_URL;*/
 
     // Write a message to the database
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
@@ -43,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     recipeData recipeData = null; // 레시피 기본정보
     ingredientsData ingredientsData = null; // 레시피 재료정보
     stepData stepData = null; // 레시피 과정정보
+
+    LocalDate now = LocalDate.now();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
         //myRef.removeValue(); // drop all DB
+        //updateData();
+
 
         // 앱 최초 실행 여부 판단
         SharedPreferences pref = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
@@ -60,13 +72,40 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean("isFirst", true);
             editor.apply();
-            updateData(); // 앱 최초 실행 시 데이터 갱신
+            recipeDBRef.child("Last_Update").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    String last_update = snapshot.getValue().toString();
+                    String now_date = now.toString();
+                    if (!last_update.equals(now_date)){
+                        updateData();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+
+                }
+            });
         }
 
         // 최초 실행 이후, 일주일에 한 번만 데이터 갱신
-        Calendar calendar = Calendar.getInstance(); // 오늘 날짜
-        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) { // 일요일에만 데이터 업데이트 (주기 설정)
-            updateData();
+        if (now.getDayOfWeek().getValue() == 7) { // 일요일에만 데이터 업데이트 (주기 설정, 월=1 ~ 일=7)
+            recipeDBRef.child("Last_Update").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    String last_update = snapshot.getValue().toString();
+                    String now_date = now.toString();
+                    if (!last_update.equals(now_date)){
+                        updateData();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+
+                }
+            });
         }
 
         // Navigation 구성
@@ -86,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
         Thread getData = new getData();
         Thread getData_IRDNT = new getData_IRDNT();
         Thread getData_STEP = new getData_STEP();
+
+        recipeDBRef.child("Last_Update").setValue(now.toString()); // 오늘의 날짜, 시간
 
         getData.start(); // 레시피 기본정보
         try {
@@ -126,6 +167,10 @@ public class MainActivity extends AppCompatActivity {
                 v_IRDNT_CODE = jObject.getString("IRDNT_CODE");
                 v_IMG_URL = jObject.getString("IMG_URL");
                 v_DET_URL = jObject.getString("DET_URL");
+                /*img_url = jObject.getString("IMG_URL");
+                v_IMG_URL = urlToBitmap(img_url);
+                det_url = jObject.getString("DET_URL");
+                v_DET_URL = urlToBitmap(det_url);*/
 
                 //firebase에 data input
                 recipeData = new recipeData(v_RECIPE_ID, v_RECIPE_NM_KO, v_SUMRY, v_NATION_CODE, v_NATION_NM, v_TY_CODE, v_TY_NM, v_COOKING_TIME, v_CALORIE, v_QNT, v_LEVEL_NM, v_IRDNT_CODE, v_IMG_URL, v_DET_URL);
